@@ -1,4 +1,6 @@
-# Sudoku solver
+## Sudoku solver
+
+# Utilities
 
 def cross(A, B):
     return [a + b for a in A for b in B]
@@ -15,3 +17,5 @@ unitlist = rows + columns + squares
 
 units = dict((c, [unit for unit in unitlist if c in unit]) for c in cells)
 peers = dict((c, set(sum(units[c],[])) - set([c])) for c in cells)
+
+# Parser
