@@ -13,4 +13,5 @@ squares = [cross(lets, nums)
            for lets in ('ABC', 'DEF', 'GHI') for nums in ('123', '456', '789')]
 unitlist = rows + columns + squares
 
-
+units = dict((c, [unit for unit in unitlist if c in unit]) for c in cells)
+peers = dict((c, set(sum(units[c],[])) - set([c])) for c in cells)
