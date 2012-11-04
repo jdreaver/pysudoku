@@ -30,6 +30,13 @@ def convert_puzzle(puzzle):
 
 possibs = [convert_puzzle(puzzle) for puzzle in puzzles]
 
+# Logic Solver
+def remove_from_string(string, value):
+    '''Removes value from string if it is in string, else does nothing'''
+    loc = string.find(value)
+    if loc > -1:
+        string = string[:loc] + string[loc + 1:]
+
 def propagate_constraints(value, possibs, peers):
     for peer in peers:
         loc = possibs[peer].find(value)
@@ -51,6 +58,18 @@ def logic_solve(possibs):
     #return possibs
     return search_solve(possibs, unsolved_cells) if unsolved_cells else possibs
 
+# Search
+def check_constraint(value, possibs, peers):
+    return all([value != possibs[peer] for peer in peers if len(possibs[peer]) == 1])
+
+def search_solve(possibs, unsolved_cells):
+    N = len(unsolved_cells)
+    poss_fillins = dict((cell, possibs[cell]) for cell in unsolved_cells)
+    i = 0
+    #while i < N:
+    #    possibs[cell] = 
+        
+
 # Display function (stolen from Norvig)
 def display(values):
     "Display these values as a 2-D grid."
@@ -61,6 +80,4 @@ def display(values):
                       for c in numbers)
         if r in 'CF': print line
     print
-
-
 
