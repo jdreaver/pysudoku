@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Sudoku solver
 
 # Utilities
 =======
 from load_sudokus import *
+=======
+
+>>>>>>> development
 
 # Sudoku solver
 >>>>>>> development
@@ -29,28 +33,22 @@ peers = dict((c, set(sum(units[c],[])) - set([c])) for c in cells)
 =======
 # Create puzzles
 
-puzzles = loadfile()
-
 def convert_puzzle(puzzle):
     possibs = {}
     for i, cell in enumerate(cells):
         possibs[cell] = numbers if puzzle[i] == '0' else puzzle[i]
     return possibs
 
-possibs = [convert_puzzle(puzzle) for puzzle in puzzles]
-
 # Logic Solver
-def remove_from_string(string, value):
-    '''Removes value from string if it is in string, else does nothing'''
-    loc = string.find(value)
-    if loc > -1:
-        string = string[:loc] + string[loc + 1:]
 
 def propagate_constraints(value, possibs, peers):
     for peer in peers:
         loc = possibs[peer].find(value)
+        if possibs[peer] == value:
+            return False
         if loc > -1:
-            possibs[peer] = possibs[peer][:loc] + possibs[peer][loc + 1:] 
+            possibs[peer] = possibs[peer][:loc] + possibs[peer][loc + 1:]
+    return True
             
 
 def logic_solve(possibs):
@@ -64,20 +62,38 @@ def logic_solve(possibs):
                 del unsolved_cells[i]
                 propagate_constraints(value, possibs, peers[cell])
                 num_changed += 1
-    #return possibs
     return search_solve(possibs, unsolved_cells) if unsolved_cells else possibs
 
 # Search
 def check_constraint(value, possibs, peers):
     return all([value != possibs[peer] for peer in peers if len(possibs[peer]) == 1])
 
-def search_solve(possibs, unsolved_cells):
-    N = len(unsolved_cells)
-    poss_fillins = dict((cell, possibs[cell]) for cell in unsolved_cells)
-    i = 0
-    #while i < N:
-    #    possibs[cell] = 
+def generate_children(node):
+    children = []
+    (possibs, unsolved_cells) = node
+    cell = unsolved_cells[0]
+    for val in possibs[cell]:
+        new_possibs = possibs.copy()
+        if propagate_constraints(val, new_possibs, peers[cell]):
+            new_possibs[cell] = val
+            #print cell
+            #display(new_possibs)
+            new_unsolved_cells = unsolved_cells[1:]
+            children.append((new_possibs, new_unsolved_cells))
+    return children
         
+
+def search_solve(possibs, unsolved_cells):
+    unsolved_cells = sorted(unsolved_cells, key=lambda c: len(possibs[c]))
+    node = (possibs, unsolved_cells)
+    frontier = [node]
+    while frontier:
+        node = frontier.pop()
+        if not node[1]:
+            return node[0]
+        children = generate_children(node)
+        frontier.extend(children)
+    return None
 
 # Display function (stolen from Norvig)
 def display(values):
@@ -90,4 +106,15 @@ def display(values):
         if r in 'CF': print line
     print
 
+<<<<<<< HEAD
+>>>>>>> development
+=======
+# Check Sudoku
+def check(possibs):
+    for c in cells:
+        val = possibs[c]
+        for p in [k for peer in peers[c] for k in possibs[peer]]:
+            if p == val:
+                return False
+    return True
 >>>>>>> development

@@ -6,3 +6,6 @@ def test_suite():
 
     assert len(puzzles) == 50
     assert len(puzzles[0]) == 81
+
+    assert propagate_constraints('1', {'A1':'1'}, ['A1']) == False
+    assert propagate_constraints('1', {'A1':'234'}, ['A1']) == True
