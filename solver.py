@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 ## Sudoku solver
 
 # Utilities
-=======
 from load_sudokus import *
-=======
-
->>>>>>> development
-
-# Sudoku solver
->>>>>>> development
 
 def cross(A, B):
     return [a + b for a in A for b in B]
@@ -28,9 +20,6 @@ unitlist = rows + columns + squares
 units = dict((c, [unit for unit in unitlist if c in unit]) for c in cells)
 peers = dict((c, set(sum(units[c],[])) - set([c])) for c in cells)
 
-<<<<<<< HEAD
-# Parser
-=======
 # Create puzzles
 
 def convert_puzzle(puzzle):
@@ -106,9 +95,7 @@ def display(values):
         if r in 'CF': print line
     print
 
-<<<<<<< HEAD
->>>>>>> development
-=======
+
 # Check Sudoku
 def check(possibs):
     for c in cells:
@@ -117,4 +104,3 @@ def check(possibs):
             if p == val:
                 return False
     return True
->>>>>>> development
