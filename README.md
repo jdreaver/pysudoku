@@ -16,9 +16,9 @@ According to [Wikipedia](http://en.wikipedia.org/wiki/Sudoku):
 
 Here is in example:
 
-![Unsolved sudoku](/img/unsolved.svg)
+![Unsolved sudoku](/img/unsolved.png)
 
-![Solved sudoku](/img/solved.svg)
+![Solved sudoku](/img/solved.png)
 
 #Solution
 
