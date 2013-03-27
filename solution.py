@@ -1,5 +1,4 @@
 from solver import *
-from load_sudokus import *
 from time import time
 
 puzzles = loadfile()

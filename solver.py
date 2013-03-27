@@ -2,10 +2,7 @@
 Main solving routines for a loaded sudoku.
 """
 
-import string
-
 ## Board Setup and Utilities (taken from Norvig)
-
 def cross(A, B):
     return [a + b for a in A for b in B]
 
@@ -31,12 +28,39 @@ def convert_puzzle(puzzle):
     return possibs
 
 ## Main solving function
+def solve_puzzle(puzzle):
 
+    """Solves sudoku using two step method.
+
+    Given a sudoku puzzle string, this function returns an output
+    string with all missing values filled in.
+
+    Args:
+        puzzle: one-line string representing an unsolved puzzle
+
+    Returns:
+        One-line string with missing values filled in, or None if 
+        there is no solution.
+
+    """
+
+    possibilities = convert_puzzle(puzzle)
+    (solution, unsolved_cells) = logic_solve(possibilities)
+    if unsolved_cells:
+        solution = search_solve(possibilities, unsolved_cells)
+    return solution
+        
+
+def convert_solution(solution):
+    
+    """Turns solution dictionary into string."""
+
+    return ''.join([value for cell, value in sorted(solution.items())])
 
 ## Logic Solver
 
-def propagate_constraints(value, possibs, peers):
-    for peer in peers:
+def propagate_constraints(value, possibs, cell_peers):
+    for peer in cell_peers:
         loc = possibs[peer].find(value)
         if possibs[peer] == value:
             return False
@@ -56,25 +80,11 @@ def logic_solve(possibs):
                 del unsolved_cells[i]
                 propagate_constraints(value, possibs, peers[cell])
                 num_changed += 1
-    return search_solve(possibs, unsolved_cells) if unsolved_cells else possibs
+    return (possibs, unsolved_cells)
 
 # Search
-def check_constraint(value, possibs, peers):
-    return all([value != possibs[peer] for peer in peers if len(possibs[peer]) == 1])
-
-def generate_children(node):
-    children = []
-    (possibs, unsolved_cells) = node
-    cell = unsolved_cells[0]
-    for val in possibs[cell]:
-        new_possibs = possibs.copy()
-        if propagate_constraints(val, new_possibs, peers[cell]):
-            new_possibs[cell] = val
-            #print cell
-            #display(new_possibs)
-            new_unsolved_cells = unsolved_cells[1:]
-            children.append((new_possibs, new_unsolved_cells))
-    return children
+# def check_constraint(value, possibs, peers):
+#     return all([value != possibs[peer] for peer in peers if len(possibs[peer]) == 1])
         
 
 def search_solve(possibs, unsolved_cells):
@@ -89,6 +99,20 @@ def search_solve(possibs, unsolved_cells):
         frontier.extend(children)
     return None
 
+def generate_children(node):
+    children = []
+    (possibs, unsolved_cells) = node
+    cell = unsolved_cells[0]
+    for val in possibs[cell]:
+        new_possibs = possibs.copy()
+        if propagate_constraints(val, new_possibs, peers[cell]):
+            new_possibs[cell] = val
+            #print cell
+            #display(new_possibs)
+            new_unsolved_cells = unsolved_cells[1:]
+            children.append((new_possibs, new_unsolved_cells))
+    return children
+
 # Display function (taken from Norvig)
 def display(values):
     "Display these values as a 2-D grid."
@@ -99,6 +123,21 @@ def display(values):
                       for c in numbers)
         if r in 'CF': print line
     print
+
+
+def string_display(puzzle):
+    lines = [puzzle[9*i:9*(i+1)] for i in range(9)]
+    separator = '+' + '+'.join(['---']*3) + '+'
+    for i, line in enumerate(lines):
+        if i % 3 == 0:
+            print separator
+        this_line = ''.join(c + ('|' if str(i) in '25' else '')
+                            for i, c in enumerate(line))
+        this_line = '|' + this_line + '|'
+        print this_line
+    print separator
+            
+    
 
 
 # Check Sudoku
@@ -133,11 +172,9 @@ def parse_sudokus(raw_string, unknown_value='.'):
         A list of single-line, length 81 strings of integers
 
     """
-
+    
     replaced = raw_string.replace(unknown_value, '0')
-    #digits = filter(lambda x: x.isdigit(), replaced)
     digits = ''.join((x for x in replaced if x.isdigit()))
-    print digits
     if len(digits) % 81 != 0:
         print "Not a proper number of digits in string!"
         return None
@@ -145,15 +182,19 @@ def parse_sudokus(raw_string, unknown_value='.'):
     puzzles = [digits[81*i:81*(i+1)] for i in range(len(digits)/81)]
     return puzzles
 
-def loadfile():
-    '''Load sudokus as one line string.'''
-    sudokus = []
-    with open('sudoku.txt', 'r') as f:
-        for i, line in enumerate(f):
-            if i % 10 == 0:
-                puzzle = ''
-            else:
-                puzzle += line.rstrip()
-            if i % 10 == 9:
-                sudokus.append(puzzle)
-    return sudokus
+# def load_file(filename):
+#     with open(filename) as f:
+#         return f.read()
+
+# def loadfile():
+#     '''Load sudokus as one line string.'''
+#     sudokus = []
+#     with open('sudoku.txt', 'r') as f:
+#         for i, line in enumerate(f):
+#             if i % 10 == 0:
+#                 puzzle = ''
+#             else:
+#                 puzzle += line.rstrip()
+#             if i % 10 == 9:
+#                 sudokus.append(puzzle)
+#     return sudokus

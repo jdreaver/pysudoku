@@ -1,5 +1,10 @@
 import solver
 
+euler_file = 'euler_sudokus.txt'
+search_puzzle = '400000805030000000000700000020000060000080400000010000000603070500200000104000000'
+
+
+
 def test_utilities():
     assert len(solver.cells) == 81
     assert len(solver.squares) == 9
@@ -27,3 +32,5 @@ def test_load_parser():
     parsed = solver.parse_sudokus(simple+funky+grid, unknown_value='.')
     assert len(parsed) == 3
     assert all([len(puzzle) == 81 for puzzle in parsed])
+
+    
