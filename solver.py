@@ -1,7 +1,8 @@
+"""
+Main solving routines for a loaded sudoku.
+"""
 
-## Sudoku solver
-
-# Utilities
+## Board Setup and Utilities (taken from Norvig)
 from load_sudokus import *
 
 def cross(A, B):
@@ -28,7 +29,10 @@ def convert_puzzle(puzzle):
         possibs[cell] = numbers if puzzle[i] == '0' else puzzle[i]
     return possibs
 
-# Logic Solver
+## Main solving function
+
+
+## Logic Solver
 
 def propagate_constraints(value, possibs, peers):
     for peer in peers:
@@ -84,7 +88,7 @@ def search_solve(possibs, unsolved_cells):
         frontier.extend(children)
     return None
 
-# Display function (stolen from Norvig)
+# Display function (taken from Norvig)
 def display(values):
     "Display these values as a 2-D grid."
     width = 1+max(len(values[c]) for c in cells)

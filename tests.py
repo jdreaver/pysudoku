@@ -1,6 +1,6 @@
 from solver import *
 
-def test_suite():
+def test_utilities():
     assert len(cells) == 81
     assert len(squares) == 9
 

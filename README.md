@@ -1,4 +1,4 @@
-euler96
+pysudoku
 =======
 
-So far, utility functions are good.
+This is a sudoku solver I made in python. 
