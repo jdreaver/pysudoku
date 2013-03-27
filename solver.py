@@ -2,6 +2,8 @@
 Main solving routines for a loaded sudoku.
 """
 
+import string
+
 ## Board Setup and Utilities (taken from Norvig)
 
 def cross(A, B):
@@ -107,3 +109,51 @@ def check(possibs):
             if p == val:
                 return False
     return True
+
+# Load utility functions
+def parse_sudokus(raw_string, unknown_value='.'):
+    """Converts one or more puzzles into single-line strings.
+
+    This function takes a series of sudokus and converts them into
+    seperate one-line strings. This is done by first replacing all
+    instances of the unknown_value with 0, and then removing everything
+    but integers in raw_string. Each set of 81 consecutive integers
+    constitutes one puzzle. 
+
+    This means that a user's representation of puzzles can have all
+    manner of decorations as long as integers and the representation
+    of unknown values are consecutive when read from left to right,
+    top to bottom. 
+
+    Args:
+        raw_string: one or more raw puzzles in a string
+        unknown_value: user's representation of unknown value
+    
+    Returns:
+        A list of single-line, length 81 strings of integers
+
+    """
+
+    replaced = raw_string.replace(unknown_value, '0')
+    #digits = filter(lambda x: x.isdigit(), replaced)
+    digits = ''.join((x for x in replaced if x.isdigit()))
+    print digits
+    if len(digits) % 81 != 0:
+        print "Not a proper number of digits in string!"
+        return None
+
+    puzzles = [digits[81*i:81*(i+1)] for i in range(len(digits)/81)]
+    return puzzles
+
+def loadfile():
+    '''Load sudokus as one line string.'''
+    sudokus = []
+    with open('sudoku.txt', 'r') as f:
+        for i, line in enumerate(f):
+            if i % 10 == 0:
+                puzzle = ''
+            else:
+                puzzle += line.rstrip()
+            if i % 10 == 9:
+                sudokus.append(puzzle)
+    return sudokus

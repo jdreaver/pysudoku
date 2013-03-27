@@ -6,7 +6,7 @@ This is a sudoku solver I made in python.
 
 According to [Wikipedia](http://en.wikipedia.org/wiki/Sudoku):
 
-    *Sudoku*, originally called Number Place, is a logic-based,
+    Sudoku, originally called Number Place, is a logic-based,
     combinatorial number-placement puzzle. The objective is to fill a
     9×9 grid with digits so that each column, each row, and each of
     the nine 3×3 sub-grids that compose the grid (also called "boxes",
@@ -19,6 +19,8 @@ Here is in example:
 ![Unsolved sudoku](/img/unsolved.png)
 
 ![Solved sudoku](/img/solved.png)
+
+#Usage
 
 #Solution
 
