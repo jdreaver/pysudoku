@@ -3,7 +3,6 @@ Main solving routines for a loaded sudoku.
 """
 
 ## Board Setup and Utilities (taken from Norvig)
-from load_sudokus import *
 
 def cross(A, B):
     return [a + b for a in A for b in B]
