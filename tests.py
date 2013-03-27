@@ -24,6 +24,6 @@ def test_load_parser():
               5 . . |2 . . |. . .     
               1 . 4 |. . . |. . .     """
 
-    parsed = solver.parse_sudokus(simple+funky+grid)
+    parsed = solver.parse_sudokus(simple+funky+grid, unknown_value='.')
     assert len(parsed) == 3
     assert all([len(puzzle) == 81 for puzzle in parsed])
